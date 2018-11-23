@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body{
+				background-image: url(../public/timg4.jpg);
+				background-attachment: fixed;
+				background-repeat: no-repeat;
+				background-size: 100% 100%;
+				text-align: center;
+			}
+			section{
+				width: 650px;
+				height: 550px;
+				margin: 15px auto;
+				border: 1px solid #a4a5a7;
+			}
+			h1{
+				width: 400px;
+				margin: 60px auto 30px;
+				text-align: center;
+			}
+			textarea{
+				resize: none;
+				font-size: 15px;
+			}
+			.title{
+				width: 600px;
+				height: 100px;
+			}
+			.msg{
+				width: 600px;
+				height: 250px;
+			}
+			button{
+				float: right;
+				background: #f0e1ca;
+				border-radius: 2px;
+				font-size: 15px;
+				padding: 8px 20px;
+				margin: 15px 25px 0px 0px;
+				box-shadow: 0px 1px 1px grey;
+				cursor: pointer;
+			}
+
+		</style>
+	</head>
+	<body>
+		<h1>说点什么...</h1>
+		<section>
+			<p>标题</p>
+			<textarea class="title"></textarea>
+			<p>内容</p>
+			<textarea class="msg"></textarea>
+			<button class="publish">发布</button>
+			<button class="cancle">取消</button>
+		</section>
+
+
+		<script type="text/javascript" src="../public/jquery-3.1.1.min.js" ></script>
+		<script>
+			$('.publish').click(function() {
+				if ($('input').eq(0).val()=='') {
+					alert('标题不能为空')
+				} else if ($('input').eq(1).val()=='') {
+					alert('内容不能为空')
+				} else {
+					$.ajax({
+						type:"get",
+						url:"http://localhost:8989/addBlog",
+						data:{title:$('.title').val(),msg:$('.msg').val()},
+						success:function (res) {
+							if (res=='ok') {
+								location.href = 'http://localhost:8989/'
+							}
+						}
+					})
+				}			
+			})
+			$('.cancle').click(function() {
+				location.href = 'http://localhost:8989/'
+			})
+		</script>
+	</body>
+</html>

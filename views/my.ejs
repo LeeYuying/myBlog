@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body{
+				background-image: url(../public/timg3.jpg);
+				background-attachment: fixed;
+				background-repeat: no-repeat;
+				background-size: 100% 100%;
+			}
+			h1{
+				width: 400px;
+				margin: 300px auto 30px;
+				text-align: center;
+			}
+			body>p{
+				float: right;
+			}
+			button{
+				width: 600px;
+				height: 40px;
+				background: white;
+				margin: 15px auto 10px;
+				border-radius: 10px;
+				font-size: 50px;
+				color: #666666;
+				text-align: center;
+				line-height: 40px;
+				outline: none;
+				cursor: pointer;
+				display: block;
+			}
+			ul{
+				list-style: none;
+				padding: 0px;
+			}
+			li{
+				width: 600px;
+				background: white;
+				margin: 15px auto;
+				border-radius: 10px;
+				overflow: hidden;
+				box-shadow: 0px 1px 1px grey;
+			}
+			.title{
+				width: 500px;
+				height: 30px;
+				margin: 20px 35px 10px;
+				font-weight: bold;
+				float: left;
+			}
+			.msg{
+				width: 500px;
+				padding-left: 45px;
+				float: left;
+			}
+			.del{
+				cursor: pointer;
+				margin-top: -35px;
+				padding-right: 30px;
+				float: right;
+			}
+			.time{
+				color: #a4a5a7;
+				font-size: 15px;
+				padding-left: 45px;
+				float: left;
+			}
+		</style>
+	</head>
+	<body>
+		<p><%= user %><a href="http://localhost:8989/quit">退出</a></p>
+		<h1>我的博客</h1>
+		<section>
+			<button>+</button>
+			<ul></ul>
+		</section>
+
+		<script type="text/javascript" src="../public/jquery-3.1.1.min.js" ></script>
+		<script>
+			$.ajax({
+				type:"get",
+				url:"http://localhost:8989/getBlog",
+				success:function (res) {
+					for (var i in res) {
+						var tag = `<li>
+									<p class="title">${res[i].title}</p>
+									<p class="msg">${res[i].msg}</p>
+									<span class="del" onclick="del(this)">×</span>
+									<p class="time">${res[i].time}</p>
+								   </li>`
+						$('ul').prepend(tag);
+					}
+				}
+			});
+			$('button').click(function() {
+				location.href = 'http://localhost:8989/add';
+			})
+			function del(a) {
+				var com = confirm('确定要删除吗？');
+				if (com==true) {
+					$.ajax({
+						type:"get",
+						url:"http://localhost:8989/delBlog",
+						data:{time:$(a).siblings('.time').html()},
+						success:function (res) {
+							if (res=='ok') {
+								$(a).parent().remove();
+							}
+						}
+					})
+				}	
+			};
+		</script>
+	</body>
+</html>

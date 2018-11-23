@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body{
+				background-image: url(../public/timg2.jpg);
+				background-attachment: fixed;
+				background-repeat: no-repeat;
+				background-size: 100% 100%;
+			}
+			section{
+				width: 500px;
+				margin: 0px auto;
+				padding: 40px;
+			}
+			label{
+				float: left;
+				width: 10em;
+				margin-right: 1em;
+				text-align: right;
+			}
+			span{
+				color: red;
+				padding-left: 10px;
+			}
+			h1{
+				width: 400px;
+				margin: 190px auto 0px;
+				text-align: center;
+			}
+			button{
+				width: 150px;
+				height: 30px;
+				background-color: #3388ff;
+				display: block;
+				margin: 30px auto;
+				color: white;
+				border-radius: 2px;
+				font-size: 16px;
+				line-height: 30px;
+				box-shadow: 0px 1px 1px grey;
+				cursor: pointer;
+			}
+			p{
+				margin-bottom: 20px;
+			}
+			.login{
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>欢迎注册</h1>
+		<section>	
+			<form action="http://localhost:8989/signUp" method="post" onsubmit="return aa()">
+				<p><label>用户名：</label><input type="text" class="username" name="user"/><span class="tip1"></span></p>
+				<p><label>输入密码：</label><input type="password" class="pwd" name="pass"/><span class="tip2"></span></p>
+				<p><label>确认密码：</label><input type="password" class="comPwd"/><span class="tip3"></span></p>
+				<button>注册</button>
+				<p class="login">已有账号？<a href="http://localhost:8989/login">点我登录</a></p>
+			</form>
+		</section>
+		
+		
+		<script type="text/javascript" src="../public/jquery-3.1.1.min.js" ></script>
+		<script>
+			function aa() {
+				var flag;
+				if ($('.tip1').html()=='√'&&$('.tip2').html()=='√'&&$('.tip2').html()=='√') {
+					flag = true;
+				} else{
+					flag = false;
+				}
+				return flag;
+			}
+			$('.username').blur(function () {
+				if ($(this).val()=='') {
+					$('.tip1').html('用户名不能为空');
+					$('.tip1').css({'color':'red'})
+				} else{
+					$.ajax({
+						type:"post",
+						url:"http://localhost:8989/regUser",
+						data:{name:$(this).val()},
+						success:function (res) {
+							if (res=='error') {
+								$('.tip1').html('用户名已存在');
+								$('.tip1').css({'color':'red'});
+							} else if (res=='ok') {
+								$('.tip1').html('√');
+								$('.tip1').css({'color':'lime'});
+							}
+						}
+					});
+				}
+			})
+			$('.pwd').blur(function () {
+				if ($(this).val()=='') {
+					$('.tip2').html('密码不能为空');
+					$('.tip2').css({'color':'red'});
+				} else{
+					$('.tip2').html('√');
+					$('.tip2').css({'color':'lime'});
+				}
+			})
+			$('.comPwd').blur(function () {
+				if ($(this).val()=='') {
+					$('.tip3').html('请确认密码');
+					$('.tip3').css({'color':'red'});
+				} else if ($(this).val()!=$('.pwd').val()) {
+					$('.tip3').html('两次密码不一致');
+					$('.tip3').css({'color':'red'});
+				} else {
+					$('.tip3').html('√');
+					$('.tip3').css({'color':'lime'});
+				}
+			})
+		</script>
+	</body>
+</html>

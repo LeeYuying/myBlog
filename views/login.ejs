@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body{
+				background-image: url(../public/timg1.jpg);
+				background-attachment: fixed;
+				background-repeat: no-repeat;
+				background-size: 100% 100%;
+			}
+			section{
+				width: 500px;
+				margin: 0px auto;
+				padding: 40px;
+			}
+			label{
+				float: left;
+				width: 10em;
+				margin-right: 1em;
+				text-align: right;
+			}
+			span{
+				color: red;
+				padding-left: 10px;
+			}
+			h1{
+				width: 400px;
+				margin: 190px auto 0px;
+				text-align: center;
+			}
+			button{
+				width: 150px;
+				height: 30px;
+				background-color: #3388ff;
+				display: block;
+				margin: 30px auto;
+				color: white;
+				border-radius: 2px;
+				font-size: 16px;
+				line-height: 30px;
+				box-shadow: 0px 1px 1px grey;
+				cursor: pointer;
+			}
+			p{
+				margin-bottom: 20px;
+			}
+			.register{
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>欢迎登录</h1>
+		<section>
+			<form>
+				<p><label>用户名：</label><input type="text" class="username" name="user" /><span class="tip1"></span></p>
+				<p><label>密码：</label><input type="password" class="password" name="pass" /><span class="tip2"></span></p>
+				<button>登&nbsp;录</button>
+				<p class="register">暂无账号？<a href="http://localhost:8989/register">点我注册</a></p>
+			</form>
+		</section>
+		<script type="text/javascript" src="../public/jquery-3.1.1.min.js" ></script>
+		<script>
+			$('button').click(function(e) {
+				e.preventDefault();
+				if ($('.username').val()=='') {
+					$('.tip1').html('用户名不能为空');
+				} else if ($('.password').val()=='') {
+					$('.tip2').html('密码不能为空');
+				} else {
+					$.ajax({
+						type:'post',
+						url:'http://localhost:8989/signIn',
+						data:{user:$('.username').val(),pass:$('.password').val()},
+						success:function (res){
+							if (res=='error') {
+								alert('用户名或密码错误！');
+							} else if (res=='ok') {
+								location.href = 'http://localhost:8989/'
+							}
+						}
+					})
+				}
+				
+			})
+			$('.username').blur(function() {
+				if ($(this).val()=='') {
+					$('.tip1').html('用户名不能为空');
+				} else {
+					$('.tip1').html('');
+				}
+			});
+			$('.password').blur(function() {
+				if ($(this).val()=='') {
+					$('.tip2').html('密码不能为空');
+				} else {
+					$('.tip1').html('');
+				}
+			})
+		</script>
+	</body>
+</html>
